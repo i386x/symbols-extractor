@@ -53,15 +53,23 @@ it is defined, same names of symbols from different scopes etc.
 A general data type that describes a data type contract is an interface
 ```go
 type Contract interface {
-	ContractType() DataType
-	BeginPosition() int
-	EndPosition() int
+	Type() string
+	Package() string
+}
+```
+
+Some information are common for all contracts, e.g. the name of the package
+where a contract has been made
+```go
+type BaseContract struct {
+	Package string
 }
 ```
 
 ## Data Type Contract Table
 
-Whenever a new contract is made it must be stored to contract table.
+Actually, data type contract table and symbol table are same (contracts are
+stored to symbol table).
 
 ## Data Type Contracts for Expressions
 
@@ -201,9 +209,9 @@ type MethodExprContract struct {
 }
 ```
 **Note**: Compiler knows whether `T.M` is valid or not, but we must find out
-the type of `T.M`. That means we must search in the symbol table (contract
-table?) for a method `M` with the receiver type `T` (or `*T`, see Golang
-specification to get more about this).
+the type of `T.M`. That means, we must search in the symbol table for a method
+`M` with the receiver type `T` (or `*T`, see Golang specification to get more
+about this).
 
 Let `x` be of a form `(y)` where `y` is `Expression`. The data type contract of
 `x` is the data type contract of `y`.
